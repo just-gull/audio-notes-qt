@@ -7,77 +7,86 @@ import AudioNotes 1.0
 
 ListView {
     id: listView
-//    property AudioNotesRepo selectedRepo
 
-//    model: notesApp.reposModel
+    property AudioNotesRepo selectedRepo
 
+    signal folderAdded(url folderPath)
 
     header: Label {
-        text: "Репозитории:"
+        width: parent.width
+        horizontalAlignment: Text.AlignHCenter
+        background: Rectangle {
+            color: "#f3f3f3"
+        }
+        text: qsTr("Репозитории")
         font.bold: true
-        font.pointSize: 12
+        font.pointSize: 22
+        topPadding: 12
         bottomPadding: 12
     }
 
-//    delegate: ItemDelegate {
-//        id: listItem
+    delegate: ItemDelegate {
+        id: listItem
 
-//        property AudioNotesRepo repo: modelData
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        Label {
-//            text: listItem.repo.name
-//            anchors.verticalCenter: parent.verticalCenter
-//            anchors.leftMargin: 12
-//            anchors.left: parent.left
-//            font.bold: true
-//        }
-//        onClicked:{
-//            selectedRepo = repo
-//        }
-//        ListView.onAdd: {
-//            if(listView.count == 1) {
-//                selectedRepo = listItem.repo
-//            }
-//        }
-//        Rectangle {
-//            implicitHeight: 1
-//            anchors.bottom: parent.bottom
-//            anchors.left: parent.left
-//            anchors.right: parent.right
-//            color: "lightgray"
+        property AudioNotesRepo repo: modelData
 
-//        }
-//    }
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-//    footer: ItemDelegate {
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        RowLayout {
-//            anchors.fill: parent
-//            RoundButton{
-//                text: "+"
-//                Layout.alignment: Qt.AlignHCenter
-//                onClicked: triggerAddRepo()
-//            }
-//            Label {
-//                Layout.fillWidth: true
-//                Layout.alignment: Qt.AlignHCenter
-//                text: "Добавить"
-//            }
-//        }
-//        onClicked: triggerAddRepo()
-//    }
+        onClicked:{
+            selectedRepo = repo
+        }
+        ListView.onAdd: {
+            if(listView.count == 1) {
+                selectedRepo = listItem.repo
+            }
+        }
 
-//    function triggerAddRepo() {
-//        selectRepoFolderDialog.open()
-//    }
+        Label {
+            text: listItem.repo.name
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 12
+            anchors.left: parent.left
+            font.bold: true
+        }
+        Rectangle {
+            implicitHeight: 1
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            color: "lightgray"
+        }
+    }
 
-//    FileDialog {
-//        id: selectRepoFolderDialog
-//        selectFolder: true
-//        onAccepted: {
+    footer: ItemDelegate {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        contentItem: RowLayout {
+            anchors {
+                fill: parent
+                leftMargin: 8
+                topMargin: 8
+            }
+            RoundButton{
+                text: "+"
+                Layout.alignment: Qt.AlignHCenter
+                onClicked: selectRepoFolderDialog.open()
+            }
+            Label {
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
+                text: "Добавить"
+            }
+        }
+        onClicked: selectRepoFolderDialog.open()
+    }
+
+    FileDialog {
+        id: selectRepoFolderDialog
+        selectFolder: true
+        onAccepted: {
+            listView.folderAdded(folder);
 //            notesApp.addAudioRepo(folder)
-//        }
-//    }
+        }
+    }
 }

@@ -31,6 +31,10 @@ Window {
     RepositoriesView {
         id: repositoriesView
         visible: false
+
+        reposModel: appModel.reposModel
+
+        onFolderAdded: (folder) => appModel.addAudioRepo(folder);
     }
 
     Component.onCompleted: {
