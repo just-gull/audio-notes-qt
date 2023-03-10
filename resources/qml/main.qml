@@ -6,8 +6,12 @@ import QtQuick.Dialogs 1.3
 
 import AudioNotes 1.0
 
+import "./views/empty-repository"
+import "./views/notes-repository"
+
 Window {
     id: mainWindow
+
     width: 640
     height: 480
     minimumWidth: 480
@@ -15,71 +19,93 @@ Window {
     visible: true
     title: qsTr("Audio notes")
 
-    AudioNotesApp{
-        id: modelAudioNotes
+    AudioNotesApp {
+        id: appModel
     }
 
-    RowLayout {
-        id: defaulModal
-        visible: modelAudioNotes.emptyNotes
-//        x: (parent.width - defaulModal.width) / 2
-//        y: (parent.height - defaulModal.height) / 2
-        anchors.centerIn: parent
-        RoundButton{
-            text: "+"
-            Layout.alignment: Qt.AlignHCenter
-            onClicked: triggerAddRepo()
-        }
-        Label {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
-            text: "Добавить"
-        }
+    EmptyRepositoriesView {
+        id: emptyView
+        visible: false
     }
 
-    SplitView {
-        id: rootSplitView
-        anchors.fill: parent
-        visible: !modelAudioNotes.emptyNotes
+    RepositoriesView {
+        id: repositoriesView
+        visible: false
+    }
 
-        RepositoryListView {
-            id: repositoryView
-            SplitView.minimumWidth: 200
-
-        }
-
-        AudioNotesListView {
-            id: notesView
-            repo: repositoryView.selectedRepo
-            SplitView.minimumWidth: 200
-            SplitView.fillWidth: true
+    Component.onCompleted: {
+//        console.log("The window is loaded!");
+        // загружаем сохраненные данные
+        // и показываем разные экраны в зависимости от этого
+        appModel.init();
+        if (appModel.emptyNotes) {
+            emptyView.visible = true;
+        } else {
+            repositoriesView.visible = true;
         }
     }
 
-    function triggerAddRepo() {
-        selectRepoFolderDialog.open()
-    }
+//    RowLayout {
+//        id: defaulModal
+//        visible: modelAudioNotes.emptyNotes
+////        x: (parent.width - defaulModal.width) / 2
+////        y: (parent.height - defaulModal.height) / 2
+//        anchors.centerIn: parent
+//        RoundButton{
+//            text: "+"
+//            Layout.alignment: Qt.AlignHCenter
+//            onClicked: triggerAddRepo()
+//        }
+//        Label {
+//            Layout.fillWidth: true
+//            Layout.alignment: Qt.AlignHCenter
+//            text: "Добавить"
+//        }
+//    }
 
-    FileDialog {
-        id: selectRepoFolderDialog
-        selectFolder: true
-        onAccepted: {
-            rootSplitView.visible = true
-            defaulModal.visible = false
-            mainWindow.update()
-            notesApp.addAudioRepo(folder)
-            if(defaulModal.active){
-                defaulModal.close() 
-            }
-        }
-    }
+//    SplitView {
+//        id: rootSplitView
+//        anchors.fill: parent
+//        visible: !modelAudioNotes.emptyNotes
 
-    Connections {
-        target: notesApp
-        onUpdateWindow: {
-            rootSplitView.visible = true
-            defaulModal.visible = false
-            mainWindow.update()
-        }
-    }
+//        RepositoryListView {
+//            id: repositoryView
+//            SplitView.minimumWidth: 200
+
+//        }
+
+//        AudioNotesListView {
+//            id: notesView
+//            repo: repositoryView.selectedRepo
+//            SplitView.minimumWidth: 200
+//            SplitView.fillWidth: true
+//        }
+//    }
+
+//    function triggerAddRepo() {
+//        selectRepoFolderDialog.open()
+//    }
+
+//    FileDialog {
+//        id: selectRepoFolderDialog
+//        selectFolder: true
+//        onAccepted: {
+//            rootSplitView.visible = true
+//            defaulModal.visible = false
+//            mainWindow.update()
+//            notesApp.addAudioRepo(folder)
+//            if(defaulModal.active){
+//                defaulModal.close()
+//            }
+//        }
+//    }
+
+//    Connections {
+//        target: notesApp
+//        onUpdateWindow: {
+//            rootSplitView.visible = true
+//            defaulModal.visible = false
+//            mainWindow.update()
+//        }
+//    }
 }

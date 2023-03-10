@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-        <file>qml/RepositoryListView.qml</file>
-        <file>qml/AudioNotesListView.qml</file>
-        <file>qml/AudioTrackView.qml</file>
-        <file>qml/AudioNoteCreationPanel.qml</file>
+        <file>qml/views/empty-repository/EmptyRepositoriesView.qml</file>
+        <file>qml/views/notes-repository/RepositoryListView.qml</file>
+        <file>qml/views/notes-repository/AudioNotesListView.qml</file>
+        <file>qml/views/notes-repository/AudioTrackView.qml</file>
+        <file>qml/views/notes-repository/AudioNoteCreationPanel.qml</file>
+        <file>qml/views/notes-repository/RepositoriesView.qml</file>
     </qresource>
 </RCC>

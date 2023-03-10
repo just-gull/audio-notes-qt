@@ -29,9 +29,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<AudioNoteCreator>("AudioNotes", 1, 0, "AudioNoteCreator");
 
 
-    AudioNotesApp* notesApp = new AudioNotesApp();
+//    AudioNotesApp* notesApp = new AudioNotesApp();
 
-    engine.rootContext()->setContextProperty("notesApp", notesApp);
+//    engine.rootContext()->setContextProperty("notesApp", notesApp);
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app,
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-    notesApp->init();
+//    notesApp->init();
 
     return app.exec();
 }

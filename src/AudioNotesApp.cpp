@@ -11,6 +11,7 @@
 AudioNotesApp::AudioNotesApp(QObject *parent)
     : QObject{parent}
 {
+    qInfo() << "AudioNotesApp Constructor called!";
     m_reposModel = new AudioNotesReposModel(this);
 }
 
@@ -21,6 +22,7 @@ bool AudioNotesApp::emptyNotes() const
 
 void AudioNotesApp::init()
 {
+    qInfo() << "AudioNotesApp init called!";
     urls_.clear();
     QFile file("init.txt");
     if (file.open(QIODevice::ReadOnly)){

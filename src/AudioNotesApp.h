@@ -16,7 +16,7 @@ public:
 
     bool emptyNotes() const;
 
-    void init();
+    Q_INVOKABLE void init();
     void save();
 
 signals:

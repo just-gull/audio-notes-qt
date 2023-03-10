@@ -1,2 +1,4 @@
 #Qt Creator CMake user file
 CMakeLists.txt.user
+
+.DS_Store
