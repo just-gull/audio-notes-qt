@@ -4,8 +4,9 @@
         <file>qml/views/empty-repository/EmptyRepositoriesView.qml</file>
         <file>qml/views/notes-repository/RepositoryListView.qml</file>
         <file>qml/views/notes-repository/AudioNotesListView.qml</file>
-        <file>qml/views/notes-repository/AudioTrackView.qml</file>
         <file>qml/views/notes-repository/AudioNoteCreationPanel.qml</file>
         <file>qml/views/notes-repository/RepositoriesView.qml</file>
+        <file>qml/views/notes-repository/components/AudioNoteListItemView.qml</file>
+        <file>qml/views/notes-repository/components/AudioTrackView.qml</file>
     </qresource>
 </RCC>
