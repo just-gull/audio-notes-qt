@@ -37,6 +37,7 @@ Item {
 
             TextField{
                 placeholderText: qsTr("Название заметки")
+                text: newNote.name
                 Layout.fillWidth: true
                 onTextEdited: newNote.name = text
             }
@@ -145,6 +146,14 @@ Item {
             return;
         }
         noteCreator.create(targetRepo)
+    }
+
+    function cancelRecording() {
+        noteCreator.cancelRecording()
+    }
+
+    function resetPanel() {
+        noteCreator.reset()
     }
 
     ColorDialog {

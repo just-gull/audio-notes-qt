@@ -7,7 +7,7 @@
 #include "AudioNotesModel.h"
 #include "models/AudioNotesReposModel.h"
 #include "AudioNotePlayback.h"
-#include "AudioNoteCreator.h"
+#include "util/AudioNoteCreator.h"
 
 int main(int argc, char *argv[])
 {

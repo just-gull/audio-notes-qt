@@ -1,6 +1,6 @@
 #include "AudioNoteCreator.h"
-#include "AudioNote.h"
-#include "models/AudioNotesRepo.h"
+#include "../AudioNote.h"
+#include "../models/AudioNotesRepo.h"
 #include <QDateTime>
 
 #include <QDebug>
@@ -30,11 +30,11 @@ AudioNoteCreator::AudioNoteCreator(QObject *parent)
       m_recordingAccepted(false),
       m_recordingAmplitude(0.0)
 {
-    auto updateDevicesTimer = new QTimer(this);
-    connect(updateDevicesTimer, &QTimer::timeout, this, [this](){
-        updateInputDevices();
-    });
-    updateDevicesTimer->start(5000);
+//    auto updateDevicesTimer = new QTimer(this);
+//    connect(updateDevicesTimer, &QTimer::timeout, this, [this](){
+//        updateInputDevices();
+//    });
+//    updateDevicesTimer->start(5000);
 
     connect(m_audioNote, &AudioNote::nameChanged, this, &AudioNoteCreator::readyChanged);
     connect(m_audioNote, &AudioNote::pathChanged, this, &AudioNoteCreator::readyChanged);
@@ -237,12 +237,25 @@ void AudioNoteCreator::cancelRecording()
     m_recorder->stop();
 }
 
+void AudioNoteCreator::reset()
+{
+    m_audioNote->setName("");
+    m_audioNote->setColor(QColor::fromRgb(0, 0, 0));
+    m_audioNote->setEncrypted(false);
+    m_audioNote->setPassword("");
+}
+
 void AudioNoteCreator::create(AudioNotesRepo *targetRepo)
 {
-    m_audioNote->setPath(targetRepo->path() + "/" + QString::number(QDateTime::currentMSecsSinceEpoch()) + ".audionote");
-    m_audioNote->saveToFile(m_recordedPath);
-    m_audioNote->init();
-    targetRepo->addNote(m_audioNote);
+    auto* audioNote = new AudioNote(targetRepo);
+    audioNote->setName(m_audioNote->name());
+    audioNote->setColor(m_audioNote->color());
+    audioNote->setEncrypted(m_audioNote->encrypted());
+    audioNote->setPassword(m_audioNote->password());
+    audioNote->setPath(targetRepo->path() + "/" + QString::number(QDateTime::currentMSecsSinceEpoch()) + ".audionote");
+    audioNote->saveToFile(m_recordedPath);
+    audioNote->init();
+    targetRepo->addNote(audioNote);
 }
 
 bool AudioNoteCreator::isRecording() const

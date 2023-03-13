@@ -50,7 +50,7 @@ ListView {
             RoundButton{
                 text: "+"
                 Layout.alignment: Qt.AlignHCenter
-                onClicked: audioNoteCreation.open()
+                onClicked: showCreationDialog()
             }
             Label {
                 Layout.fillWidth: true
@@ -58,7 +58,7 @@ ListView {
                 text: qsTr("Добавить")
             }
         }
-        onClicked: audioNoteCreation.open()
+        onClicked: showCreationDialog()
         enabled: repo != null
     }
 
@@ -91,10 +91,18 @@ ListView {
                     }
                     Button {
                         text: qsTr("Отмена")
-                        onClicked: audioNoteCreation.close()
+                        onClicked: {
+                            creationPanel.cancelRecording()
+                            audioNoteCreation.close()
+                        }
                     }
                 }
             }
         }
+    }
+
+    function showCreationDialog() {
+        creationPanel.resetPanel()
+        audioNoteCreation.open()
     }
 }

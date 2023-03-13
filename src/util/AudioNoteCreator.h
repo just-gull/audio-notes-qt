@@ -33,6 +33,7 @@ public slots:
     void stopRecording();
     void cancelRecording();
     void create(AudioNotesRepo* targetRepo);
+    void reset();
 signals:
     void readyChanged();
     void inputDevicesChanged();
