@@ -5,28 +5,46 @@ import QtQuick.Dialogs 1.3
 
 import AudioNotes 1.0
 
-SplitView {
-    id: rootSplitView
+Item {
+    id: rootView
+
     anchors.fill: parent
-//        visible: !modelAudioNotes.emptyNotes
 
     required property AudioNotesReposModel reposModel
 
     signal folderAdded(url folderPath)
 
-    RepositoryListView {
-        id: repositoryView
-        SplitView.minimumWidth: 200
+    SplitView {
+        id: splitView
+        anchors.fill: parent
+    //        visible: !modelAudioNotes.emptyNotes
 
-        model: reposModel
+        RepositoryListView {
+            id: repositoryView
+            SplitView.minimumWidth: 200
 
-        onFolderAdded: (folder) => rootSplitView.folderAdded(folder)
+            model: rootView.reposModel
+
+            onFolderAdded: (folder) => rootView.folderAdded(folder)
+        }
+
+        AudioNotesListView {
+            id: notesView
+            repo: repositoryView.selectedRepo
+            SplitView.minimumWidth: 200
+            SplitView.fillWidth: true
+        }
     }
 
-    AudioNotesListView {
-        id: notesView
-        repo: repositoryView.selectedRepo
-        SplitView.minimumWidth: 200
-        SplitView.fillWidth: true
+    Rectangle {
+        id: loaderView
+        visible: reposModel.processingRepos
+        anchors.fill: parent
+        color: "#DDFFFFFF"
+        BusyIndicator {
+            anchors.centerIn: parent
+            running: true
+        }
     }
+
 }

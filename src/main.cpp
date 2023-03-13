@@ -1,12 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "Scanner.h"
 #include "AudioNote.h"
-#include "AudioNotesApp.h"
-#include "AudioNotesRepo.h"
+#include "models/AudioNotesApp.h"
+#include "models/AudioNotesRepo.h"
 #include "AudioNotesModel.h"
-#include "AudioNotesReposModel.h"
+#include "models/AudioNotesReposModel.h"
 #include "AudioNotePlayback.h"
 #include "AudioNoteCreator.h"
 
@@ -19,7 +18,6 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<Scanner>("AudioNotes", 1, 0, "Scanner");
     qmlRegisterType<AudioNotesApp>("AudioNotes", 1, 0, "AudioNotesApp");
     qmlRegisterType<AudioNotesRepo>("AudioNotes", 1, 0, "AudioNotesRepo");
     qmlRegisterType<AudioNotesReposModel>("AudioNotes", 1, 0, "AudioNotesReposModel");

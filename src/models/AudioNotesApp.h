@@ -17,7 +17,6 @@ public:
     bool emptyNotes() const;
 
     Q_INVOKABLE void init();
-    void save();
 
 signals:
     void updateWindow();
@@ -27,8 +26,8 @@ public slots:
 
 private:
     AudioNotesReposModel *m_reposModel;
-    QVector<QUrl> urls_;
 
     AudioNotesReposModel *reposModel() const;
+    void saveRepo(const QUrl &path);
 };
 

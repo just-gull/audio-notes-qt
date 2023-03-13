@@ -1,6 +1,6 @@
 #include "AudioNoteCreator.h"
 #include "AudioNote.h"
-#include "AudioNotesRepo.h"
+#include "models/AudioNotesRepo.h"
 #include <QDateTime>
 
 #include <QDebug>

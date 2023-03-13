@@ -23,6 +23,9 @@ public:
 public slots:
     void update();
 
+signals:
+    void initializationFinished();
+
 private:
     AudioNotesModel *m_notesModel{};
     QString m_path;

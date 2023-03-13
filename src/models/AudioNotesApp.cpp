@@ -8,10 +8,11 @@
 
 #include <QDebug>
 
+#define INIT_FILENAME "init.txt"
+
 AudioNotesApp::AudioNotesApp(QObject *parent)
     : QObject{parent}
 {
-    qInfo() << "AudioNotesApp Constructor called!";
     m_reposModel = new AudioNotesReposModel(this);
 }
 
@@ -22,44 +23,32 @@ bool AudioNotesApp::emptyNotes() const
 
 void AudioNotesApp::init()
 {
-    qInfo() << "AudioNotesApp init called!";
-    urls_.clear();
-    QFile file("init.txt");
+    QFile file{ INIT_FILENAME };
     if (file.open(QIODevice::ReadOnly)){
         QTextStream in(&file);
         while (!in.atEnd()){
-            if(auto &&path = in.readLine(); path != ""){
-                urls_.append(QUrl(path));
+            if(const auto& path = in.readLine(); path != ""){
+                m_reposModel->addRepo(QUrl(path));
             }
         }
         file.close();
     }
-    for(auto &&i : urls_){
-        m_reposModel->addRepo(i.toLocalFile());
-    }
-    if(!emptyNotes()){
-        emit updateWindow();
-    }
 }
 
-void AudioNotesApp::save()
+void AudioNotesApp::saveRepo(const QUrl &path)
 {
-    QString filename = "init.txt";
-    QFile file(filename);
-    if (file.open(QIODevice::ReadWrite)) {
+    QFile file{ INIT_FILENAME };
+    if (file.open(QIODevice::Append)) {
         QTextStream stream(&file);
-        for(auto &&i : urls_){
-            stream << i.toString() << endl;
-        }
+        stream << path.toString() << endl;
+        file.close();
     }
-    file.close();
 }
 
 void AudioNotesApp::addAudioRepo(const QUrl &path)
 {
+    saveRepo(path);
     m_reposModel->addRepo(path);
-    urls_.append(path);
-    save();
 }
 
 AudioNotesReposModel *AudioNotesApp::reposModel() const

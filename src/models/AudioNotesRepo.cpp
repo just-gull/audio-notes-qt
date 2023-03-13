@@ -1,15 +1,15 @@
 #include "AudioNotesRepo.h"
-#include "AudioNote.h"
-#include "AudioNotesModel.h"
+#include "../AudioNote.h"
+#include "../AudioNotesModel.h"
 
 #include <QFileInfo>
 #include <QDebug>
 
-#include "Scanner.h"
+#include "../util/Scanner.h"
 
 AudioNotesRepo::AudioNotesRepo(const QString & path,
                                QObject *parent)
-    : QObject{parent}, m_path(path)
+    : QObject{parent}, m_path { path }
 {
     m_notesModel = new AudioNotesModel(this);
 }
@@ -41,11 +41,13 @@ void AudioNotesRepo::addNote(AudioNote *note)
 
 void AudioNotesRepo::update()
 {
-    auto scanner = std::make_shared<Scanner>();
-    connect(scanner.get(), &Scanner::scanComplete, [this](const QString &, const QStringList & audioNotes){
+    auto* scanner = new Scanner(); // std::make_shared<Scanner>();
+    connect(scanner, &Scanner::scanComplete, this, [this, scanner](const QStringList & audioNotes){
         for(auto &&notePath: audioNotes) {
             m_notesModel->addIfNotExists(AudioNote::build(notePath));
         }
+        emit initializationFinished();
+        scanner->deleteLater();
     });
     scanner->scanFolder(m_path);
 }
