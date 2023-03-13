@@ -10,7 +10,6 @@ import "./components"
 
 ListView {
     property AudioNotesRepo repo
-    property AudioNote audioNoteRemoveClick
     model: repo ? repo.notesModel : null
 
     header: Label {
@@ -72,22 +71,26 @@ ListView {
                 anchors.fill: parent
                 anchors.margins: 20
 
-                AudioNoteCreationPanel{
+                AudioNoteCreationPanel {
                     id: creationPanel
                     targetRepo: repo
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                 }
                 RowLayout {
-                    Button{
-                        text: "Создать"
+                    Rectangle { // filler
+                        Layout.fillWidth: true
+                    }
+                    Button {
+                        text: qsTr("Создать")
+                        enabled: creationPanel.isAudioRecorded
                         onClicked: {
                             creationPanel.processBuild()
                             audioNoteCreation.close()
                         }
                     }
                     Button {
-                        text: "Выход"
+                        text: qsTr("Отмена")
                         onClicked: audioNoteCreation.close()
                     }
                 }
