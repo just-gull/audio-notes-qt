@@ -15,9 +15,6 @@ ListView {
     header: Label {
         width: parent.width
         horizontalAlignment: Text.AlignHCenter
-        background: Rectangle {
-            color: "#f3f3f3"
-        }
         text: qsTr("Репозитории")
         font.bold: true
         font.pointSize: 22
@@ -32,13 +29,16 @@ ListView {
 
         anchors.left: parent.left
         anchors.right: parent.right
+        highlighted: ListView.isCurrentItem
 
         onClicked:{
             selectedRepo = repo
+            listView.currentIndex = index
         }
         ListView.onAdd: {
-            if(listView.count == 1) {
-                selectedRepo = listItem.repo
+            if (listView.count > 0 && listView.currentIndex === -1) {
+                listView.currentIndex = 0
+                selectedRepo = listView.currentItem.repo
             }
         }
 
@@ -86,7 +86,6 @@ ListView {
         selectFolder: true
         onAccepted: {
             listView.folderAdded(folder);
-//            notesApp.addAudioRepo(folder)
         }
     }
 }
