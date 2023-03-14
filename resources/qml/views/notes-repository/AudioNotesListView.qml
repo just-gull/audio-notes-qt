@@ -25,6 +25,8 @@ ListView {
     delegate: AudioNoteListItemView {
         id: listItem
         audioNote: modelData
+
+        onAudioNoteRemoved: audioNote.remove()
     }
 
     remove: Transition {

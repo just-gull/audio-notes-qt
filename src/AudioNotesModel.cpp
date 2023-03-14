@@ -55,9 +55,9 @@ void AudioNotesModel::removeNote()
             beginRemoveRows(QModelIndex(), index, index);
             m_items.remove(index);
             endRemoveRows();
+            QFile file (object->path());
+            file.remove();
             object->deleteLater();
-           // QFile file (object->path());
-           // file.remove();
         }
     }
 }
