@@ -2,9 +2,7 @@
 
 #include <QObject>
 
-#include <QAudioDeviceInfo>
-
-class QAudioRecorder;
+#include "AudioNoteRecorder.h"
 
 class AudioNotesRepo;
 class AudioNote;
@@ -23,8 +21,9 @@ public:
     explicit AudioNoteCreator(QObject *parent = nullptr);
 
     bool ready()const;
-    QStringList inputDevices()const;
+    QStringList inputDevices() const;
     bool isRecording() const;
+    bool isRecordingAccepted() const;
 
     qreal recordingAmplitude() const;
 
@@ -42,15 +41,7 @@ signals:
 
 private:
     AudioNote *m_audioNote;
-    QList<QAudioDeviceInfo> m_inputDevices;
-    QAudioRecorder* m_recorder;
-    bool m_recordingAccepted;
-    qreal m_recordingAmplitude;
-
-    QString m_recordedPath;
-
+    AudioNoteRecorder *m_audioNoteRecorder;
     AudioNote *audioNote() const;
-    void updateInputDevices();
-    void removeRecordedFile();
 };
 

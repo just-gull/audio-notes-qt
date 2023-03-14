@@ -154,6 +154,7 @@ Item {
 
     function resetPanel() {
         noteCreator.reset()
+        diagramModel.clear()
     }
 
     ColorDialog {
