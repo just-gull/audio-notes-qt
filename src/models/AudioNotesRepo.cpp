@@ -1,6 +1,6 @@
 #include "AudioNotesRepo.h"
-#include "../AudioNote.h"
-#include "../AudioNotesModel.h"
+#include "AudioNote.h"
+#include "AudioNotesModel.h"
 
 #include <QFileInfo>
 #include <QDebug>

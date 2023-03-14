@@ -1,10 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "AudioNote.h"
+#include "models/AudioNote.h"
 #include "models/AudioNotesApp.h"
 #include "models/AudioNotesRepo.h"
-#include "AudioNotesModel.h"
+#include "models/AudioNotesModel.h"
 #include "models/AudioNotesReposModel.h"
 #include "AudioNotePlayback.h"
 #include "util/AudioNoteCreator.h"

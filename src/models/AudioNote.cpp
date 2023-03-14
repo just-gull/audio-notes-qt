@@ -1,6 +1,6 @@
 #include "AudioNote.h"
 
-#include "AudioNotePlayback.h"
+#include "../AudioNotePlayback.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
