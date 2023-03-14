@@ -15,6 +15,8 @@ public:
     qreal recordingAmplitude() const;
     QString recordedPath() const;
     void removeRecordedFile();
+    qint64 recordDuration() const;
+    bool recordingAccepted() const;
 
 public slots:
     void startRecording(const QString & device);
@@ -32,5 +34,6 @@ private:
     qreal m_recordingAmplitude;
     QString m_recordedPath;
     bool m_recordingAccepted;
+    qint64 m_recordDuration;
     void updateInputDevices();
 };

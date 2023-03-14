@@ -114,6 +114,7 @@ Item {
                             diagramModel.move(1, 0, 49);
                             diagramModel.set(49, {"value": noteCreator.recordingAmplitude});
                         }
+                        recordingDuration.text = noteCreator.recordDuration
                     }
                     interval: 50
                 }
@@ -135,8 +136,8 @@ Item {
 
             Text {
                 id: recordingDuration
-                visible: noteCreator.isRecording
-                text: "0:00"
+                visible: noteCreator.isRecording || noteCreator.recordingAccepted
+                text: "00:00"
             }
         }
     }
@@ -154,6 +155,7 @@ Item {
 
     function resetPanel() {
         noteCreator.reset()
+        recordingDuration.text = "00:00"
         diagramModel.clear()
     }
 

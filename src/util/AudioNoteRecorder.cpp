@@ -9,6 +9,7 @@
 #include <QUrl>
 
 #include <QDateTime>
+#include <QTimer>
 
 template<std::size_t Size>
 struct sized_integer;
@@ -113,7 +114,8 @@ AudioNoteRecorder::AudioNoteRecorder(QObject *parent)
       m_inputDevices(QAudioDeviceInfo::availableDevices(QAudio::AudioInput)),
       m_recorder(nullptr),
       m_recordingAccepted(false),
-      m_recordingAmplitude(0.0)
+      m_recordingAmplitude(0.0),
+      m_recordDuration(0)
 {
 
 }
@@ -153,6 +155,8 @@ void AudioNoteRecorder::startRecording(const QString &device) {
     if(m_recorder){
         return;
     }
+    m_recordingAccepted = false;
+    m_recordDuration = 0;
     m_recorder = new QAudioRecorder(this);
     auto probe = new QAudioProbe(m_recorder);
     probe->setSource(m_recorder);
@@ -160,6 +164,14 @@ void AudioNoteRecorder::startRecording(const QString &device) {
         m_recordingAmplitude = calculateAmplitude(audioBuffer);
         emit recordingAmplitudeChanged();
     });
+
+    auto startTime = QDateTime::currentMSecsSinceEpoch();
+    auto durationTimer = new QTimer(m_recorder);
+    durationTimer->setInterval(100);
+    connect(durationTimer, &QTimer::timeout, this, [this, startTime](){
+        m_recordDuration = QDateTime::currentMSecsSinceEpoch() - startTime;
+    });
+    durationTimer->start();
 
 
     QAudioEncoderSettings audioSettings;
@@ -215,11 +227,14 @@ void AudioNoteRecorder::cancelRecording()
     if (m_recordingAccepted && m_recordedPath != nullptr) {
         removeRecordedFile();
     }
-    if(!m_recorder) {
-        return;
-    }
     m_recordingAccepted = false;
-    m_recorder->stop();
+    if (!m_recorder) {
+        // отправляем сигнал, чтобы оповестить о том что m_recordingAccepted изменился
+        emit isRecordingChanged();
+        return;
+    } else {
+        m_recorder->stop();
+    }
 }
 
 bool AudioNoteRecorder::isRecording() const
@@ -232,3 +247,12 @@ qreal AudioNoteRecorder::recordingAmplitude() const
     return m_recordingAmplitude;
 }
 
+qint64 AudioNoteRecorder::recordDuration() const
+{
+    return m_recordDuration;
+}
+
+bool AudioNoteRecorder::recordingAccepted() const
+{
+    return m_recordingAccepted;
+}

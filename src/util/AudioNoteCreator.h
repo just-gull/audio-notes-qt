@@ -14,7 +14,8 @@ class AudioNoteCreator : public QObject
     Q_PROPERTY(bool isRecording READ isRecording NOTIFY isRecordingChanged)
     Q_PROPERTY(qreal recordingAmplitude READ recordingAmplitude NOTIFY recordingAmplitudeChanged)
     Q_PROPERTY(QStringList inputDevices READ inputDevices NOTIFY inputDevicesChanged)
-
+    Q_PROPERTY(QString recordDuration READ recordDuration CONSTANT)
+    Q_PROPERTY(bool recordingAccepted READ recordingAccepted NOTIFY isRecordingChanged)
 
     Q_PROPERTY(bool ready READ ready NOTIFY readyChanged)
 public:
@@ -26,6 +27,8 @@ public:
     bool isRecordingAccepted() const;
 
     qreal recordingAmplitude() const;
+    QString recordDuration() const;
+    bool recordingAccepted() const;
 
 public slots:
     void startRecording(const QString & device);

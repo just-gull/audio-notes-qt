@@ -86,3 +86,18 @@ qreal AudioNoteCreator::recordingAmplitude() const
 {
     return m_audioNoteRecorder->recordingAmplitude();
 }
+
+QString AudioNoteCreator::recordDuration() const
+{
+    const auto& currentDuration = m_audioNoteRecorder->recordDuration() / 1000;
+    if (currentDuration <= 3600) {
+        return QDateTime::fromTime_t(currentDuration).toUTC().toString("mm:ss");
+    } else {
+        return QDateTime::fromTime_t(currentDuration).toUTC().toString("hh:mm:ss");
+    }
+}
+
+bool AudioNoteCreator::recordingAccepted() const
+{
+    return m_audioNoteRecorder->recordingAccepted();
+}
