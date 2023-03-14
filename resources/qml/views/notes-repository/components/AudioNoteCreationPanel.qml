@@ -11,10 +11,11 @@ Item {
     implicitHeight: panelContent.implicitHeight
 
     property AudioNotesRepo targetRepo
-    property bool isAudioRecorded: false
+    property bool isAudioNoteValid: false
 
     AudioNoteCreator{
         id: noteCreator
+        onReadyChanged: rootItem.isAudioNoteValid = noteCreator.ready
     }
     property alias newNote : noteCreator.audioNote
 
@@ -86,7 +87,6 @@ Item {
                 onClicked: {
                     if(noteCreator.isRecording){
                         noteCreator.stopRecording()
-                        rootItem.isAudioRecorded = true
                     } else {
                         noteCreator.startRecording(inputDevicesCombo.currentText)
                     }

@@ -85,7 +85,7 @@ ListView {
                     }
                     Button {
                         text: qsTr("Создать")
-                        enabled: creationPanel.isAudioRecorded
+                        visible: creationPanel.isAudioNoteValid
                         onClicked: {
                             creationPanel.processBuild()
                             audioNoteCreation.close()
