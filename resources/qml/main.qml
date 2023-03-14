@@ -21,11 +21,14 @@ Window {
 
     AudioNotesApp {
         id: appModel
+        onUpdateWindow: updateComponentsVisibility();
     }
 
     EmptyRepositoriesView {
         id: emptyView
         visible: false
+
+        onFolderSelected: (folder) => appModel.addAudioRepo(folder);
     }
 
     RepositoriesView {
@@ -38,78 +41,19 @@ Window {
     }
 
     Component.onCompleted: {
-//        console.log("The window is loaded!");
         // загружаем сохраненные данные
         // и показываем разные экраны в зависимости от этого
         appModel.init();
-        if (appModel.emptyNotes) {
-            emptyView.visible = true;
-        } else {
-            repositoriesView.visible = true;
-        }
+        updateComponentsVisibility();
     }
 
-//    RowLayout {
-//        id: defaulModal
-//        visible: modelAudioNotes.emptyNotes
-////        x: (parent.width - defaulModal.width) / 2
-////        y: (parent.height - defaulModal.height) / 2
-//        anchors.centerIn: parent
-//        RoundButton{
-//            text: "+"
-//            Layout.alignment: Qt.AlignHCenter
-//            onClicked: triggerAddRepo()
-//        }
-//        Label {
-//            Layout.fillWidth: true
-//            Layout.alignment: Qt.AlignHCenter
-//            text: "Добавить"
-//        }
-//    }
-
-//    SplitView {
-//        id: rootSplitView
-//        anchors.fill: parent
-//        visible: !modelAudioNotes.emptyNotes
-
-//        RepositoryListView {
-//            id: repositoryView
-//            SplitView.minimumWidth: 200
-
-//        }
-
-//        AudioNotesListView {
-//            id: notesView
-//            repo: repositoryView.selectedRepo
-//            SplitView.minimumWidth: 200
-//            SplitView.fillWidth: true
-//        }
-//    }
-
-//    function triggerAddRepo() {
-//        selectRepoFolderDialog.open()
-//    }
-
-//    FileDialog {
-//        id: selectRepoFolderDialog
-//        selectFolder: true
-//        onAccepted: {
-//            rootSplitView.visible = true
-//            defaulModal.visible = false
-//            mainWindow.update()
-//            notesApp.addAudioRepo(folder)
-//            if(defaulModal.active){
-//                defaulModal.close()
-//            }
-//        }
-//    }
-
-//    Connections {
-//        target: notesApp
-//        onUpdateWindow: {
-//            rootSplitView.visible = true
-//            defaulModal.visible = false
-//            mainWindow.update()
-//        }
-//    }
+    function updateComponentsVisibility() {
+        if (appModel.emptyNotes) {
+            emptyView.visible = true;
+            repositoriesView.visible = false;
+        } else {
+            repositoriesView.visible = true;
+            emptyView.visible = false;
+        }
+    }
 }

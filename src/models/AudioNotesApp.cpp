@@ -49,6 +49,7 @@ void AudioNotesApp::addAudioRepo(const QUrl &path)
 {
     saveRepo(path);
     m_reposModel->addRepo(path);
+    emit updateWindow();
 }
 
 AudioNotesReposModel *AudioNotesApp::reposModel() const
