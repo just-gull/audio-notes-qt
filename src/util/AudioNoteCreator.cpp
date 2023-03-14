@@ -5,6 +5,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QDir>
 
 #include <QTimer>
 #include <QAudioRecorder>
@@ -197,7 +198,7 @@ void AudioNoteCreator::startRecording(const QString &device) {
 
     m_recorder->setAudioSettings(audioSettings);
     m_recorder->setContainerFormat("audio/ogg");
-    m_recorder->setOutputLocation(QUrl::fromLocalFile("_audionote_tmp_" + QString::number(QDateTime::currentMSecsSinceEpoch())));
+    m_recorder->setOutputLocation(QUrl::fromLocalFile(QDir::tempPath() + "/_audionote_tmp_" + QString::number(QDateTime::currentMSecsSinceEpoch())));
 
     connect(m_recorder, &QAudioRecorder::stateChanged, this, [this](QMediaRecorder::State state){
         if(state != QMediaRecorder::StoppedState) {
@@ -230,11 +231,20 @@ void AudioNoteCreator::stopRecording()
 
 void AudioNoteCreator::cancelRecording()
 {
+    if (m_recordingAccepted && m_recordedPath != nullptr) {
+        removeRecordedFile();
+    }
     if(!m_recorder) {
         return;
     }
     m_recordingAccepted = false;
     m_recorder->stop();
+}
+
+void AudioNoteCreator::removeRecordedFile()
+{
+    QFile::remove(m_recordedPath);
+    m_recordedPath = nullptr;
 }
 
 void AudioNoteCreator::reset()
@@ -256,6 +266,9 @@ void AudioNoteCreator::create(AudioNotesRepo *targetRepo)
     audioNote->saveToFile(m_recordedPath);
     audioNote->init();
     targetRepo->addNote(audioNote);
+
+    // removing temporary file
+    removeRecordedFile();
 }
 
 bool AudioNoteCreator::isRecording() const

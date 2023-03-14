@@ -51,5 +51,6 @@ private:
 
     AudioNote *audioNote() const;
     void updateInputDevices();
+    void removeRecordedFile();
 };
 
