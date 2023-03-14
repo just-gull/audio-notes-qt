@@ -2,6 +2,7 @@
 #include "../models/AudioNote.h"
 #include "../models/AudioNotesRepo.h"
 #include <QDateTime>
+#include <QCryptographicHash>
 
 #include <QDebug>
 
@@ -68,7 +69,11 @@ void AudioNoteCreator::create(AudioNotesRepo *targetRepo)
     audioNote->setName(m_audioNote->name());
     audioNote->setColor(m_audioNote->color());
     audioNote->setEncrypted(m_audioNote->encrypted());
-    audioNote->setPassword(m_audioNote->password());
+    if (m_audioNote->encrypted()) {
+        const auto& saltedPassword = m_audioNote->password() + ":SALT_VAL";
+        const auto& hashedPassword = QString(QCryptographicHash::hash(saltedPassword.toUtf8(), QCryptographicHash::Sha256).toHex());
+        audioNote->setPassword(hashedPassword);
+    }
     audioNote->setPath(targetRepo->path() + "/" + QString::number(QDateTime::currentMSecsSinceEpoch()) + ".audionote");
     audioNote->saveToFile(m_audioNoteRecorder->recordedPath());
     audioNote->init();
