@@ -48,8 +48,7 @@ ItemDelegate {
                     text: "Комментарий: " + (listItem.audioNote ? listItem.audioNote.name : "")
                 }
                 Label {
-                    text: "Длительность: " +  (listItem.audioNote ? listItem.audioNote.playback.postition : 0)
-                          + "/" + (listItem.audioNote ? listItem.audioNote.playback.duration : 0)
+                    text: "Длительность: " + durationString()
                 }
             }
 
@@ -120,6 +119,34 @@ ItemDelegate {
             passwordErrorDialog.open()
         }
         passwordTextField.text = ""
+    }
+
+    function durationString() {
+        if (listItem.audioNote) {
+            if (listItem.audioNote.playback.active) {
+                return timeString(listItem.audioNote.playback.postition) + " / " + timeString(listItem.audioNote.playback.duration)
+            } else {
+                return timeString(listItem.audioNote.playback.duration)
+            }
+        } else {
+            return "00:00"
+        }
+    }
+
+    function timeString(milliseconds) {
+        var seconds = Math.round(milliseconds / 1000);
+        var hours   = Math.round(seconds / 3600);
+        var minutes = Math.round((seconds - (hours * 3600)) / 60);
+        seconds = seconds - (hours * 3600) - (minutes * 60);
+
+        if (hours   < 10) { hours = "0" + hours; }
+        if (minutes < 10) { minutes = "0" + minutes; }
+        if (seconds < 10) { seconds = "0" + seconds; }
+        if (milliseconds > 3600000) {
+            return hours + ':' + minutes + ':' + seconds;
+        } else {
+            return minutes + ':' + seconds;
+        }
     }
 
     Dialog {
