@@ -47,6 +47,8 @@ ListView {
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 12
             anchors.left: parent.left
+            width: listView.width - 16
+            clip: true
             font.bold: true
         }
         Rectangle {
