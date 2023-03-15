@@ -74,7 +74,7 @@ ItemDelegate {
             AudioTrackView {
                 Layout.fillWidth: true
                 audioSamples: listItem.audioNote ? listItem.audioNote.samples : null
-                playbackPosition: listItem.audioNote ? listItem.audioNote.playback.postition : 0
+                playback: listItem.audioNote ? listItem.audioNote.playback : null
                 Layout.preferredHeight: listItem.audioNote ? (listItem.audioNote.playback.active ? 60
                                                            : 40) : 0
 
