@@ -59,6 +59,10 @@ public:
 
     void saveToFile(const QString & filePath);
 
+    Q_INVOKABLE bool checkPassword(const QString & password) const;
+
+    static QString hashPassword(const QString & password);
+
 public slots:
     void remove();
 

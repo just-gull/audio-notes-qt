@@ -70,9 +70,7 @@ void AudioNoteCreator::create(AudioNotesRepo *targetRepo)
     audioNote->setColor(m_audioNote->color());
     audioNote->setEncrypted(m_audioNote->encrypted());
     if (m_audioNote->encrypted()) {
-        const auto& saltedPassword = m_audioNote->password() + ":SALT_VAL";
-        const auto& hashedPassword = QString(QCryptographicHash::hash(saltedPassword.toUtf8(), QCryptographicHash::Sha256).toHex());
-        audioNote->setPassword(hashedPassword);
+        audioNote->setPassword(AudioNote::hashPassword(m_audioNote->password()));
     }
     audioNote->setPath(targetRepo->path() + "/" + QString::number(QDateTime::currentMSecsSinceEpoch()) + ".audionote");
     audioNote->saveToFile(m_audioNoteRecorder->recordedPath());

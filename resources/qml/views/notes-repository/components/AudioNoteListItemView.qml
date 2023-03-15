@@ -64,6 +64,7 @@ ItemDelegate {
                     } else {
                         if(listItem.audioNote.encrypted) {
                             passwordField.visible = true
+                            passwordTextField.focus = true
                         } else {
                             listItem.audioNote.playback.play()
                         }
@@ -95,33 +96,44 @@ ItemDelegate {
                 id: passwordTextField
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
-                Keys.onEnterPressed: {
-                    if(listItem.audioNote.password === passwordTextField.text) {
-                        passwordTextField.visible = false
-                        listItem.audioNote.playback.play()
-                    } else {
-                    }
-                    passwordTextField.text = ""
-                }
+                onAccepted: checkPassword()
             }
             RoundButton {
                 text: "✓"
-                onClicked: {
-                    if(listItem.audioNote.password === passwordTextField.text) {
-                        passwordTextField.visible = false
-                        listItem.audioNote.playback.play()
-                    } else {
-
-                    }
-                    passwordTextField.text = ""
-                }
+                onClicked: checkPassword()
             }
+
         }
         Rectangle {
             implicitHeight: 1
             Layout.fillWidth: true
             color: "lightgray"
             Layout.bottomMargin: 3
+        }
+    }
+
+    function checkPassword() {
+        if(listItem.audioNote.checkPassword(passwordTextField.text)) {
+            passwordField.visible = false
+            listItem.audioNote.playback.play()
+        } else {
+            passwordErrorDialog.open()
+        }
+        passwordTextField.text = ""
+    }
+
+    Dialog {
+        id: passwordErrorDialog
+        parent: Overlay.overlay
+        anchors.centerIn: parent
+        title: qsTr("Ошибка")
+        standardButtons: Dialog.Ok
+
+        Label {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter
+            color: "red"
+            text: qsTr("Неверный пароль")
         }
     }
 

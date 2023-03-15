@@ -9,6 +9,8 @@
 #include <QBuffer>
 #include <QAudioDecoder>
 
+#include <QCryptographicHash>
+
 
 AudioNote::AudioNote(QObject *parent)
     : QObject{parent},
@@ -196,3 +198,15 @@ void AudioNote::remove()
     m_playback->stop();
     emit removeNode();
 }
+
+QString AudioNote::hashPassword(const QString & password)
+{
+    const auto& saltedPassword = password + ":SALT_VAL";
+    return QString(QCryptographicHash::hash(saltedPassword.toUtf8(), QCryptographicHash::Sha256).toHex());
+}
+
+bool AudioNote::checkPassword(const QString & password) const
+{
+    return m_password == AudioNote::hashPassword(password);
+}
+
