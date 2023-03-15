@@ -29,6 +29,6 @@ signals:
 private:
     std::vector<std::unique_ptr<AudioNotesRepo>> m_items;
     QAtomicInt reposInProgress;
-    void addRepo(std::unique_ptr<AudioNotesRepo>& repoPtr);
+    void addRepo(std::unique_ptr<AudioNotesRepo>&& repoPtr);
 };
 

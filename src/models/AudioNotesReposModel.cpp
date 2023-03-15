@@ -42,10 +42,10 @@ void AudioNotesReposModel::addRepo(const QUrl &path)
     });
 
     repo->init();
-    addRepo(repoPtr);
+    addRepo(std::move(repoPtr));
 }
 
-void AudioNotesReposModel::addRepo(std::unique_ptr<AudioNotesRepo>& repoPtr)
+void AudioNotesReposModel::addRepo(std::unique_ptr<AudioNotesRepo>&& repoPtr)
 {
     beginInsertRows(QModelIndex(), m_items.size(), m_items.size());
     m_items.push_back(std::move(repoPtr));
