@@ -45,5 +45,7 @@ void ScannerThread::scanDir(QString dir) {
 
 void ScannerThread::run() {
     scanDir(folder);
+    // sorting array by creation time (filename = creation time) before emitting the result
+    result.sort();
     emit done(result);
 }

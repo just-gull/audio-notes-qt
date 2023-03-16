@@ -35,8 +35,8 @@ void AudioNotesModel::addIfNotExists(AudioNote *note)
             return;
         }
         connect(note, &AudioNote::removeNode, this, &AudioNotesModel::removeNote);
-        beginInsertRows(QModelIndex(), m_items.size(), m_items.size());
-        m_items.append(note);
+        beginInsertRows(QModelIndex(), 0, 0);
+        m_items.prepend(note);
         endInsertRows();
     }
 }
