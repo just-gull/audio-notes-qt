@@ -54,6 +54,8 @@ public:
 
     const QVariantList &samples() const;
 
+    AudioNotePlayback *playback() const;
+
     static AudioNote* build(const QString & path);
 
 
@@ -87,6 +89,5 @@ private:
     QVariantList m_samples;
     AudioNotePlayback *m_playback;
 
-    AudioNotePlayback *playback() const;
 };
 

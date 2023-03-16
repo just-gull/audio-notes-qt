@@ -1,5 +1,6 @@
 #include "AudioNotesModel.h"
 #include "AudioNote.h"
+#include "../AudioNotePlayback.h"
 #include <QFile>
 #include <QDebug>
 
@@ -59,5 +60,12 @@ void AudioNotesModel::removeNote()
             file.remove();
             object->deleteLater();
         }
+    }
+}
+
+void AudioNotesModel::stopPlayback()
+{
+    for (auto&& item : m_items) {
+        item->playback()->stop();
     }
 }

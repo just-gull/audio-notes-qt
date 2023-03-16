@@ -12,6 +12,7 @@ ItemDelegate {
     height: listItemContent.height + 12
 
     signal audioNoteRemoved(AudioNote audioNote)
+    signal audioNotePlaybackStarted(AudioNote audioNote)
 
     Rectangle {
         id: topSpacer
@@ -65,6 +66,7 @@ ItemDelegate {
                             passwordField.visible = true
                             passwordTextField.focus = true
                         } else {
+                            listItem.audioNotePlaybackStarted(listItem.audioNote)
                             listItem.audioNote.playback.play()
                         }
                     }

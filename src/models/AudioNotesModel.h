@@ -18,6 +18,7 @@ public:
 
 public slots:
     void removeNote();
+    void stopPlayback();
 
 public:
     QVector<AudioNote*> m_items;

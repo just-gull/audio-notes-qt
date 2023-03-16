@@ -27,6 +27,9 @@ ListView {
         audioNote: modelData
 
         onAudioNoteRemoved: audioNote.remove()
+        onAudioNotePlaybackStarted: {
+            repo.notesModel.stopPlayback()
+        }
     }
 
     remove: Transition {
